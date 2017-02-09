@@ -1,0 +1,3 @@
+FROM logstash:5
+COPY logstash.conf /etc/logstash.conf
+CMD [ "-f", "/etc/logstash.conf" ]

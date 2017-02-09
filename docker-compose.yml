@@ -1,0 +1,58 @@
+version: "2.1"
+
+services:
+  elasticsearch:
+    image: elasticsearch:5
+    networks:
+      - es_test
+    command: -Etransport.host=0.0.0.0
+    ports:
+     - '9200:9200'
+     - '9300:9300'
+    volumes:
+    - 'es_data_1:/usr/share/elasticsearch/data'
+    
+#  es2:
+#    image: elasticsearch
+#    hostname: elasticsearch
+#    networks:
+#      es_test:
+#        ipv4_address: 172.16.236.12
+#    command: -Ees.node.name="es2" -Etransport.host=0.0.0.0 -Ediscovery.zen.minimum_master_nodes=1
+#    volumes:
+#    - 'es_data_2:/usr/share/elasticsearch/data'
+  
+  logstash:
+    #image: logstash:5
+    image: dply/logstash:5
+    build:
+      context: .
+      dockerfile: Dockerfile.logstash
+    ports:
+     - '5140:5140/tcp'
+     - '5140:5140/udp'
+    networks:
+     - es_test
+
+  kibana: 
+    image: kibana:5
+    ports:
+     - '5601:5601'
+    networks:
+     - es_test
+    
+networks:
+  es_test:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.236.0/24
+        gateway: 172.16.236.1
+
+volumes:
+  es_data_1:
+    driver: local
+#  es_data_2:
+#    driver: local
+
