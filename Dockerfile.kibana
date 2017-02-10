@@ -1,0 +1,5 @@
+from kibana:5
+
+run /usr/share/kibana/bin/kibana-plugin install x-pack
+
+

@@ -2,7 +2,10 @@ version: "2.1"
 
 services:
   elasticsearch:
-    image: elasticsearch:5
+    image: dply/elasticsearch:5
+    build:
+      context: .
+      dockerfile: Dockerfile.elasticsearch
     networks:
       - es_test
     command: -Etransport.host=0.0.0.0
@@ -10,7 +13,7 @@ services:
      - '9200:9200'
      - '9300:9300'
     volumes:
-    - 'es_data_1:/usr/share/elasticsearch/data'
+     - 'es_data_1:/usr/share/elasticsearch/data'
     
 #  es2:
 #    image: elasticsearch
@@ -34,8 +37,21 @@ services:
     networks:
      - es_test
 
+
+#  fluentd:
+#    image: fluent/fluentd
+#    ports:
+#    - '5140:5140/tcp'
+#    - '5140:5140/udp'
+#    networks:
+#    - es_test
+
+
   kibana: 
-    image: kibana:5
+    image: dply/kibana:5
+    build:
+      context: .
+      dockerfile: Dockerfile.kibana
     ports:
      - '5601:5601'
     networks:

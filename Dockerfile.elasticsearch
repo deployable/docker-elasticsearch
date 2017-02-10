@@ -1,0 +1,5 @@
+from elasticsearch:5
+
+run echo 'y' | bin/elasticsearch-plugin install x-pack
+
+
